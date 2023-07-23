@@ -1,0 +1,5 @@
+setup.py
+losscape.egg-info/PKG-INFO
+losscape.egg-info/SOURCES.txt
+losscape.egg-info/dependency_links.txt
+losscape.egg-info/top_level.txt

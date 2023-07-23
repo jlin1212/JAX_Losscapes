@@ -1,0 +1,4 @@
+sample_data/*
+!sample_data/california*
+*render.html
+data_*.json
