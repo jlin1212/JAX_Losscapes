@@ -35,7 +35,7 @@ surface_data = vis.process(landscape, parameter_path[:], resolution=101, margin_
 # print(parameter_path[-1])
 # print(vis.lowdim_fit.components_)
 
-vis.mill_plot(landscape, parameter_path, filename='data_bukin.json', resolution=101, margin_factor=1, y_range=8)
+# vis.mill_plot(landscape, parameter_path, filename='data_bukin.json', resolution=101, margin_factor=1, y_range=8)
 
-# fig = vis.plotly_plot(landscape, parameter_path[:], resolution=101, margin_factor=1, y_range=8)
-# fig.write_html('render.html')
+fig = vis.plotly_plot(landscape, parameter_path[:], resolution=101, margin_factor=1, y_range=8)
+fig.write_html('render.html')

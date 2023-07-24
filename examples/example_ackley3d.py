@@ -4,7 +4,7 @@ from losscape.models import *
 import matplotlib.pyplot as plt
 
 def ackley(x, y, z):
-  a = 20
+  a = 2
   b = 0.2
   c = 2*jnp.pi
   d = 3
@@ -37,17 +37,17 @@ class AckleyLandscape(LandscapeProblem):
   
 model = AckleyModel()
 landscape = AckleyLandscape(model)
-optimizer = optax.adam(1e-3)
+optimizer = optax.adagrad(1e-3)
 parameter_path = landscape.train_path(optimizer, epochs=160,)
 
 vis = LossVisualizer()
-surface_data = vis.process(landscape, parameter_path[:], resolution=101, margin_factor=12e4, y_range=8)
-vis.mill_plot(landscape, parameter_path, filename='data_ackley3d.json', resolution=101, margin_factor=2e4)
+surface_data = vis.process(landscape, parameter_path[:], resolution=101, margin_factor=10, y_range=8)
+vis.mill_plot(landscape, parameter_path, filename='data_ackley3d.json', resolution=101, margin_factor=10)
 
-gap_dist = vis.uniform_gap_distribution(landscape, parameter_path, samples=1500)
-# print(gap_dist)
-plt.hist(gap_dist, bins=30)
-plt.savefig('hist_ackley3d.png')
+# gap_dist = vis.uniform_gap_distribution(landscape, parameter_path, samples=1500)
+# # print(gap_dist)
+# plt.hist(gap_dist, bins=30)
+# plt.savefig('hist_ackley3d.png')
 
 # fig = vis.plotly_plot(landscape, parameter_path[:], resolution=101, margin_factor=2e4)
 # print(parameter_path[-1])

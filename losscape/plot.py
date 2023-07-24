@@ -35,7 +35,15 @@ class LandscapeProblem():
   def eval_params(self, params, batch, label):
     raise NotImplementedError()
 
-  def train_path(self, optimizer, starting_params=None, epochs=50, log_name='model', single_sample=False,  save=False, **kwargs):
+  def train_path(self, 
+                 optimizer, 
+                 starting_params=None, 
+                 epochs=50, 
+                 log_name='model', 
+                 single_sample=False,
+                 save=False,
+                 test_idx=None,
+                 **kwargs):
     params_path = []
     params = self.model.init(jax.random.PRNGKey(0), self.dataset(0)[0]) if starting_params == None else starting_params
     opt_state = optimizer.init(params)
@@ -65,9 +73,14 @@ class LandscapeProblem():
       if not single_sample:
         params_path.append(params)
 
-      if save:
-        with open('/content/drive/MyDrive/SFI/%s-%d.pkl' % (log_name, int(time())), 'wb') as param_pkl:
-          pickle.dump(params_path, param_pkl)
+      if test_idx is not None:
+        sum_loss = 0.0
+        for i in range(1000):
+          batch, label = self.dataset(test_idx + i)
+          _, _, test_value = step(params, opt_state, batch, label)
+          sum_loss += test_value
+        sum_loss /= 1000
+        print('Loss: %f, Test: %f' % (loss_value, sum_loss))
 
     return params_path
 

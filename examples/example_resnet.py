@@ -16,7 +16,7 @@ CIFAR_STD = [0.24703225141799082, 0.24348516474564, 0.26158783926049628]
 
 class CifarResnet(LandscapeProblem):
   def dataset(self, idx):
-    img, label = self.data[idx]
+    img, label = self.data[self.batch_size*idx:self.batch_size*(idx+1)]
     img = jnp.array(img) / 255.
     img = (img - jnp.array(CIFAR_MEAN)[None,None,...]) / jnp.array(CIFAR_STD)[None,None,...]
     img = img[None,...]
