@@ -6,7 +6,7 @@ import plotly.graph_objects as go
 
 import optax
 
-from tqdm.notebook import tqdm
+from tqdm import tqdm
 from functools import partial
 
 import json
@@ -109,6 +109,22 @@ class LossVisualizer():
     # print(pca.explained_variance_ratio_)
     return pca
   
+  def uniform_gap_distribution(self, landscape, parameter_path, samples=100):
+    param_dim = self.flatten_path(parameter_path).shape[1]
+    rand_projs = jax.random.uniform(jax.random.PRNGKey(0), (samples, param_dim, 2))
+    rand_projs = rand_projs / jnp.linalg.norm(rand_projs, axis=1, keepdims=True)
+    gaps = []
+    for rand_proj in tqdm(rand_projs):
+      surface_data = self.process(landscape, 
+                                  parameter_path, 
+                                  x_vec=rand_proj[:,0], 
+                                  y_vec=rand_proj[:,1], 
+                                  margin_factor=2e4, 
+                                  verbose=False)
+      gap = jnp.amin(surface_data['loss_z']) - jnp.amin(surface_data['z'])
+      gaps.append(float(gap))
+    return gaps
+  
   def mill_plot(self, landscape, parameter_path, filename, **kwargs):
     surface_data = self.process(landscape, parameter_path, **kwargs)
     output = {
@@ -118,7 +134,7 @@ class LossVisualizer():
                    [float(jnp.amin(surface_data['loss_z'])), float(jnp.amax(surface_data['loss_z']))]],
         'data': jnp.stack([surface_data['loss_x'], surface_data['loss_y'], surface_data['loss_z']], axis=1).tolist(),
         'directions': [[0,0,1],[1,0,0]],
-        'notes': ['Best Loss: %d' % jnp.amin(surface_data['loss_z'])]
+        'notes': ['Minimum Path Loss: %f' % jnp.amin(surface_data['loss_z'])]
       },
       'surface': {
         'bounds': [[float(jnp.amin(surface_data['x'])), float(jnp.amax(surface_data['x']))],
@@ -126,7 +142,7 @@ class LossVisualizer():
                    [float(jnp.amin(surface_data['z'])), float(jnp.amax(surface_data['z']))]],
         'data': surface_data['z'].tolist(),
         'directions': [[0,0,1],[1,0,0]],
-        'notes': ['No notes yet.']
+        'notes': ['Minimum Sampled Loss: %f' % jnp.amin(surface_data['z'])]
       }
     }
 

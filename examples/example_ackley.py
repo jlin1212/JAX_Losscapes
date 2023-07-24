@@ -2,11 +2,15 @@ from losscape.plot import *
 from losscape.models import *
 
 def ackley(x, y):
-  return -20 * jnp.exp(
-    -0.2 * jnp.sqrt(0.5 * (jnp.square(x) + jnp.square(y)))
+  a = 20
+  b = 0.2
+  c = 2*jnp.pi
+  d = 2
+  return -a * jnp.exp(
+    -b * jnp.sqrt((1/d) * (jnp.square(x) + jnp.square(y)))
   ) - jnp.exp(
-    0.5 * (jnp.cos(2 * jnp.pi * x) + jnp.cos(2 * jnp.pi * y))
-  ) + jnp.e + 20
+    (1/d) * (jnp.cos(c * x) + jnp.cos(c * y))
+  ) + jnp.e + a
 
 class AckleyModel(nn.Module):
   @nn.compact
