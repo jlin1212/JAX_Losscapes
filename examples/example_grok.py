@@ -49,7 +49,6 @@ optimizer = optax.adamw(1e-4)
 parameter_path = landscape.train_path(optimizer, epochs=30, test_idx=3000)
 
 vis = LossVisualizer()
-surface_data = vis.process(landscape, parameter_path[:], resolution=101, margin_factor=10, y_range=8)
 
 vis.mill_plot(landscape, parameter_path, filename='data_mnist_train.json', resolution=101, margin_factor=10, sample_idx=0)
 vis.mill_plot(landscape, parameter_path, filename='data_mnist_test.json', resolution=101, margin_factor=10, sample_idx=3000)
