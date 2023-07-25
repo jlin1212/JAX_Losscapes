@@ -13,7 +13,7 @@ class GrokMNIST(LandscapeProblem):
     def dataset(self, idx):
         batch_input, batch_label = [], []
         for i in range(32):
-            sample, label = mnist_data[10*idx + i]
+            sample, label = mnist_data[32*idx + i]
             label_vector = torch.zeros(10)
             label_vector[label] = 1.
             batch_input.append(pil_transform(sample).flatten().numpy())
