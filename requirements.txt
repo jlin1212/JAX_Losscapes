@@ -1,9 +1,0 @@
-optax
-flax
-kaleido
-imageio
-imageio-ffmpeg
-matplotlib
-jax
-io
-plotly
