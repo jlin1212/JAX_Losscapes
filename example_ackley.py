@@ -20,14 +20,20 @@ class AckleyModel(nn.Module):
     return ackley(x, y)
 
 class AckleyLandscape(LandscapeProblem):
+  def get_batch(self, training=False, indices=0):
+    return None, None
+
   def dataset(self, idx):
     return None, None
 
-  def dataset_len(self):
-    return 100
+  def dataset_len(self,training=False):
+    return 10000
 
   def load_dataset(self):
     pass
+
+  def accuracy(self, params, batch, label):
+    return 0
 
   def eval_params(self, params, batch, label):
     return self.model.apply(params, None).mean()
@@ -38,8 +44,8 @@ optimizer = optax.adam(1)
 parameter_path = landscape.train_path(optimizer, epochs=60,)
 
 vis = LossVisualizer()
-surface_data = vis.process(landscape, parameter_path[:], resolution=101, margin_factor=2e4, y_range=8)
-vis.mill_plot(landscape, parameter_path, filename='data_ackley.json', resolution=101, margin_factor=2e4, y_range=8)
+surface_data = vis.process(landscape, parameter_path[:], resolution=101, margin_factor=1, y_range=8)
+vis.mill_plot(landscape, parameter_path, filenames=['data_ackley.json'] * 2, resolution=101, margin_factor=1, y_range=8)
 
 # fig = vis.plotly_plot(landscape, parameter_path[:], resolution=101, margin_factor=2e4, y_range=8)
 # print(parameter_path[-1])
