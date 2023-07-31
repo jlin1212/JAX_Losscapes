@@ -37,7 +37,7 @@ def pathLengthProg(path):
 
 def resamplePath(path, samples):
   dists = pathLengthProg(path)
-  points = np.linspace(0,dists[-1])
+  points = np.linspace(0,dists[-1],samples)
   interpd = []
   for p in range(len(points)):
     ind = 0
