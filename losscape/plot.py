@@ -43,9 +43,12 @@ class LandscapeProblem():
                  single_sample=False,
                  save=False,
                  test_idx=None,
+                 param_scale=1.,
                  **kwargs):
     params_path = []
     params = self.model.init(jax.random.PRNGKey(0), self.dataset(0)[0]) if starting_params == None else starting_params
+    # Map over param tree and multiply every leaf by param_scale
+    params = jax.tree_util.tree_map(lambda param: param * param_scale, params)
     opt_state = optimizer.init(params)
     loss_value = -1
 

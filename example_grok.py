@@ -121,13 +121,13 @@ class MLP(nn.Module):
     def __call__(self, x):
       #x = nn.Dense(784)(x)
       #x = nn.relu(x)
-      x = nn.Dense(200)(x)
+      x = nn.Dense(200, kernel_init=nn.initializers.kaiming_normal())(x)
       x = nn.relu(x)
-      x = nn.Dense(200)(x)
+      x = nn.Dense(200, kernel_init=nn.initializers.kaiming_normal())(x)
       x = nn.relu(x)
-      x = nn.Dense(200)(x)
+      x = nn.Dense(200, kernel_init=nn.initializers.kaiming_normal())(x)
       x = nn.relu(x)
-      x = nn.Dense(10)(x)
+      x = nn.Dense(10, kernel_init=nn.initializers.kaiming_normal())(x)
       return nn.softmax(x)
 
 landscape = GrokMNIST(model=MLP())
