@@ -1,5 +1,6 @@
 from losscape.plot import *
 from losscape.models import *
+import flax.linen as nn
 
 import torch
 import torchvision
@@ -33,20 +34,20 @@ class GrokMNIST(LandscapeProblem):
 class MLP(nn.Module):
     @nn.compact
     def __call__(self, x):
-      x = nn.Dense(784)(x)
+      x = nn.Dense(784, kernel_init=nn.initializers.kaiming_normal())(x)
       x = nn.relu(x)
-      x = nn.Dense(200)(x)
+      x = nn.Dense(200, kernel_init=nn.initializers.kaiming_normal())(x)
       x = nn.relu(x)
-      x = nn.Dense(200)(x)
+      x = nn.Dense(200, kernel_init=nn.initializers.kaiming_normal())(x)
       x = nn.relu(x)
-      x = nn.Dense(200)(x)
+      x = nn.Dense(200, kernel_init=nn.initializers.kaiming_normal())(x)
       x = nn.relu(x)
-      x = nn.Dense(10)(x)
+      x = nn.Dense(10, kernel_init=nn.initializers.kaiming_normal())(x)
       return nn.softmax(x)
 
 landscape = GrokMNIST(model=MLP())
 optimizer = optax.adamw(1e-4)
-parameter_path = landscape.train_path(optimizer, epochs=30, test_idx=3000)
+parameter_path = landscape.train_path(optimizer, epochs=30, test_idx=3000, param_init_scale=10.)
 
 vis = LossVisualizer()
 
