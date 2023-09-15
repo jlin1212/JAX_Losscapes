@@ -134,7 +134,7 @@ landscape = GrokMNIST(model=MLP())
 
 #optimizer = optax.adamw(1e-4)
 optimizer = optax.sgd(1e-2,momentum=.9,nesterov=True)
-parameter_path = landscape.train_path(optimizer, epochs=10000,sample_rate=25,test_loss_stop=.95,test_loss_strikes=3)
+parameter_path = landscape.train_path(optimizer, epochs=10000,sample_rate=25,test_loss_stop=.95,test_loss_strikes=3,param_scale=10.)
 
 vis = LossVisualizer()
 

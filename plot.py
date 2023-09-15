@@ -94,11 +94,13 @@ class LandscapeProblem():
                  sample_rate=1,
                  test_loss_stop = 0,
                  test_loss_strikes = 1,
+                 param_scale=1.,
                  **kwargs):
     
     #Initialize model and param path
     params_path = []    
     params = self.model.init(jax.random.PRNGKey(0), self.get_batch()[0]) if starting_params == None else starting_params
+    params = jax.tree_util.tree_map(lambda param: param * param_scale, params)
 
     #Note: Not sure why this breaks training.
     """ params = flax.core.frozen_dict.unfreeze(params)
